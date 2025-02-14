@@ -31,7 +31,8 @@
         <ListBox x:Name="list_box_processes"
                  Grid.Row="2"
                  Margin="0,0,0,5"
-                 Height="200"/>
+                 Height="200"
+                 DisplayMemberPath="ProcessName"/>
         
         <Grid Grid.Row="3" Margin="0,0,0,5">
             <Grid.ColumnDefinitions>
@@ -51,6 +52,7 @@
                     Width="80"
                     Click="open_process"/>
         </Grid>
+        
         <Button x:Name="btn_create_process"
                 Content="Create new process"
                 Grid.Row="4"

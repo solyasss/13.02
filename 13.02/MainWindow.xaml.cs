@@ -16,6 +16,7 @@ namespace hw
             InitializeComponent();
             context = SynchronizationContext.Current;
         }
+        
         private async void update_process_list(object sender, RoutedEventArgs e)
         {
             await Task.Run(() =>
@@ -29,7 +30,7 @@ namespace hw
                     {
                         context.Send(d =>
                         {
-                            list_box_processes.Items.Add(proc.ProcessName);
+                            list_box_processes.Items.Add(proc);
                         }, null);
                     }
                 }
@@ -44,19 +45,19 @@ namespace hw
         {
             if (list_box_processes.SelectedItem != null)
             {
-                string process_name = list_box_processes.SelectedItem.ToString();
-                try
+                Process process = list_box_processes.SelectedItem as Process;
+                if (process != null)
                 {
-                    Process[] procs = Process.GetProcessesByName(process_name);
-                    foreach (Process p in procs)
+                    try
                     {
-                        p.Kill();
+                        process.Kill();
+                        MessageBox.Show($"Process \"{process.ProcessName}\" killed");
+                        list_box_processes.Items.Remove(process);
                     }
-                    MessageBox.Show($"Process \"{process_name}\" killed");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
             }
             else
@@ -75,7 +76,6 @@ namespace hw
                 bool? result = open_file_dialog.ShowDialog();
                 if (result == true)
                 {
-                 
                     txt_box_process_path.Text = open_file_dialog.FileName;
                 }
             }
